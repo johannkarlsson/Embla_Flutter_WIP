@@ -1,6 +1,7 @@
 // @dart=2.9
 // ^ Removes checks for null safety
 import 'package:flutter/material.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import './common.dart';
 import './theme.dart';
 
@@ -65,6 +66,21 @@ class IoTRoute extends StatelessWidget {
   }
 }
 
-void main() => runApp(const MaterialApp(
-      home: IoTRoute(),
-    ));
+class EmblaApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AdaptiveTheme(
+      light: lightThemeData,
+      dark: darkThemeData,
+      initial: AdaptiveThemeMode.system,
+      builder: (theme, darkTheme) => MaterialApp(
+        title: kSoftwareName,
+        theme: theme,
+        darkTheme: darkTheme,
+        home: IoTRoute(),
+      ),
+    );
+  }
+}
+
+void main() => runApp(EmblaApp());
