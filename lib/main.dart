@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import './common.dart';
 import './theme.dart';
+import './connection_card.dart';
 
 final standardAppBar = AppBar(
   bottomOpacity: 0.0,
@@ -21,6 +22,7 @@ const List<String> kDeviceTypes = <String>["Öll tæki", "Ljós", "Gardínur"];
 
 // List of IoT widgets
 List<Widget> _iot(BuildContext context) {
+  print("Context: , $context");
   return <Widget>[
     Container(
       margin: const EdgeInsets.only(left: 25.0, bottom: 80.0),
@@ -42,6 +44,22 @@ List<Widget> _iot(BuildContext context) {
         const Text("herna koma eh tæki"),
         const Text("herna koma eh tæki"),
         const Text("herna koma eh tæki"),
+        Wrap(
+          spacing: 10.0,
+          runSpacing: 10.0,
+          children: <Widget>[
+            ConnectionCard(),
+            ConnectionCard(),
+            ConnectionCard(),
+            ConnectionCard(),
+            ConnectionCard(),
+            ConnectionCard(),
+            ConnectionCard(),
+            ConnectionCard(),
+            ConnectionCard(),
+            ConnectionCard(),
+          ],
+        ),
         // TODO: Add widget for filtering connected devices (dropdown?)
         // TODO: Add widget for connected devices
         // TODO: Add widget for going into "Tengja snjalltæki"
