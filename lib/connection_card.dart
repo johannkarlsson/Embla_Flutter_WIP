@@ -42,10 +42,12 @@ class _ConnectionCardState extends State<ConnectionCard> {
                   Text(
                     widget.connection.name,
                     style: Theme.of(context).textTheme.titleMedium,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     widget.connection.brand,
-
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     //style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   Container(

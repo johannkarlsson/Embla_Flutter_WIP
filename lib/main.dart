@@ -78,7 +78,7 @@ List<Widget> _iot(BuildContext context) {
             ConnectionCard(
               connection: Connection(
                 name: 'Sonos',
-                brand: 'Sonos',
+                brand: 'Sonos, Inc.',
                 icon: Icon(
                   Icons.speaker_outlined,
                   color: Theme.of(context).primaryColor,
@@ -89,7 +89,7 @@ List<Widget> _iot(BuildContext context) {
             ConnectionCard(
               connection: Connection(
                 name: 'Shelly',
-                brand: 'Shelly',
+                brand: 'Shelly, Inc.',
                 icon: Icon(
                   Icons.lightbulb_outline_rounded,
                   color: Theme.of(context).primaryColor,
@@ -100,7 +100,7 @@ List<Widget> _iot(BuildContext context) {
             ConnectionCard(
               connection: Connection(
                 name: 'Spotify',
-                brand: 'Spotify Inc.',
+                brand: 'Spotify Technologies S.A.',
                 icon: Icon(
                   Icons.music_note_outlined,
                   color: Theme.of(context).primaryColor,
