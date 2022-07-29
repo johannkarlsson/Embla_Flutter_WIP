@@ -1,9 +1,15 @@
+// @dart=2.9
+// ^ Removes checks for null safety
 import 'package:flutter/material.dart';
 import 'package:iotembla/common.dart';
-import './theme.dart';
+import './connection.dart';
 
 // TODO: Maybe not stateful?
 class ConnectionCard extends StatefulWidget {
+  final Connection connection;
+
+  const ConnectionCard({Key key, this.connection}) : super(key: key);
+
   @override
   _ConnectionCardState createState() => _ConnectionCardState();
 }
@@ -13,6 +19,11 @@ class _ConnectionCardState extends State<ConnectionCard> {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+    print(width);
+    var cardWidth = (width < 500.0) ? (width * 0.35) : (width * 0.175);
+
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -21,32 +32,25 @@ class _ConnectionCardState extends State<ConnectionCard> {
         dlog("Counter: $counter");
       },
       child: Card(
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
-          borderRadius: const BorderRadius.all(Radius.circular(12.0)),
-        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
           child: SizedBox(
-            width: 150,
+            width: cardWidth,
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'Hue Hub',
-                    style: Theme.of(context).textTheme.titleLarge,
+                    widget.connection.name,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Text(
-                    'Philips',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    widget.connection.brand,
+
+                    //style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   Container(
                     alignment: Alignment.centerRight,
-                    child: Icon(
-                      Icons.lightbulb_outline_rounded,
-                      color: Theme.of(context).primaryColor,
-                    ),
+                    child: widget.connection.icon,
                   ),
                 ]),
           ),

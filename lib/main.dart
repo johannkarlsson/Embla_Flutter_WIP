@@ -5,6 +5,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import './common.dart';
 import './theme.dart';
 import './connection_card.dart';
+import 'connection.dart';
 
 final standardAppBar = AppBar(
   bottomOpacity: 0.0,
@@ -25,39 +26,88 @@ List<Widget> _iot(BuildContext context) {
   print("Context: , $context");
   return <Widget>[
     Container(
-      margin: const EdgeInsets.only(left: 25.0, bottom: 80.0),
+      margin: const EdgeInsets.only(top: 20.0, left: 25.0, bottom: 30.0),
       child: const Text(
         "Embla snjallheimili",
         style: TextStyle(fontSize: 25.0, color: Colors.black),
       ),
     ),
+    Container(
+      margin: const EdgeInsets.only(left: 25.0, bottom: 20.0),
+      child: Text(
+        'Tækin mín',
+        style: Theme.of(context).textTheme.headline4,
+      ),
+    ),
     Center(
         child: Column(
       children: <Widget>[
-        DropdownButton(
-            items: kDeviceTypes.map<DropdownMenuItem<String>>((String s) {
-              return DropdownMenuItem<String>(value: s, child: Text(s));
-            }).toList(),
-            onChanged: (String val) {
-              dlog(val);
-            }),
-        const Text("herna koma eh tæki"),
-        const Text("herna koma eh tæki"),
-        const Text("herna koma eh tæki"),
+        // DropdownButton(
+        //     items: kDeviceTypes.map<DropdownMenuItem<String>>((String s) {
+        //       return DropdownMenuItem<String>(value: s, child: Text(s));
+        //     }).toList(),
+        //     onChanged: (String val) {
+        //       dlog(val);
+        //     }),
         Wrap(
           spacing: 10.0,
           runSpacing: 10.0,
           children: <Widget>[
-            ConnectionCard(),
-            ConnectionCard(),
-            ConnectionCard(),
-            ConnectionCard(),
-            ConnectionCard(),
-            ConnectionCard(),
-            ConnectionCard(),
-            ConnectionCard(),
-            ConnectionCard(),
-            ConnectionCard(),
+            ConnectionCard(
+              connection: Connection(
+                name: 'Hue Hub',
+                brand: 'Philips',
+                icon: Icon(
+                  Icons.lightbulb_outline_rounded,
+                  color: Theme.of(context).primaryColor,
+                  size: 30.0,
+                ),
+              ),
+            ),
+            ConnectionCard(
+              connection: Connection(
+                name: 'Home Smart',
+                brand: 'Ikea',
+                icon: Icon(
+                  Icons.lightbulb_outline_rounded,
+                  color: Theme.of(context).primaryColor,
+                  size: 30.0, // TODO: Make this dynamic
+                ),
+              ),
+            ),
+            ConnectionCard(
+              connection: Connection(
+                name: 'Sonos',
+                brand: 'Sonos',
+                icon: Icon(
+                  Icons.speaker_outlined,
+                  color: Theme.of(context).primaryColor,
+                  size: 30.0,
+                ),
+              ),
+            ),
+            ConnectionCard(
+              connection: Connection(
+                name: 'Shelly',
+                brand: 'Shelly',
+                icon: Icon(
+                  Icons.lightbulb_outline_rounded,
+                  color: Theme.of(context).primaryColor,
+                  size: 30.0,
+                ),
+              ),
+            ),
+            ConnectionCard(
+              connection: Connection(
+                name: 'Spotify',
+                brand: 'Spotify Inc.',
+                icon: Icon(
+                  Icons.music_note_outlined,
+                  color: Theme.of(context).primaryColor,
+                  size: 30.0,
+                ),
+              ),
+            ),
           ],
         ),
         // TODO: Add widget for filtering connected devices (dropdown?)
