@@ -1,11 +1,16 @@
 // @dart=2.9
 // ^ Removes checks for null safety
+//import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
+
 import './common.dart';
 import './theme.dart';
 import './connection_card.dart';
 import 'connection.dart';
+import 'mdns_scan.dart';
 
 final standardAppBar = AppBar(
   bottomOpacity: 0.0,
@@ -21,17 +26,36 @@ const String kFindDevices = "Finna snjalltæki";
 
 const List<String> kDeviceTypes = <String>["Öll tæki", "Ljós", "Gardínur"];
 
+void _pushMDNSRoute(BuildContext context, dynamic arg) {
+  Navigator.push(
+    context,
+    CupertinoPageRoute(
+      builder: (context) => MDNSRoute(),
+    ),
+  );
+}
+
 // List of IoT widgets
 List<Widget> _iot(BuildContext context) {
   print("Context: , $context");
   return <Widget>[
     Container(
-      margin: const EdgeInsets.only(top: 20.0, left: 25.0, bottom: 30.0),
-      child: const Text(
-        "Embla snjallheimili",
-        style: TextStyle(fontSize: 25.0, color: Colors.black),
-      ),
-    ),
+        margin: const EdgeInsets.only(
+            top: 20.0, left: 25.0, bottom: 30.0, right: 25.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              "Embla snjallheimili",
+              style: TextStyle(fontSize: 25.0, color: Colors.black),
+            ),
+            IconButton(
+                onPressed: () {
+                  _pushMDNSRoute(context, null);
+                },
+                icon: const Icon(Icons.add, size: 30.0)),
+          ],
+        )),
     Container(
       margin: const EdgeInsets.only(left: 25.0, bottom: 20.0),
       child: Text(

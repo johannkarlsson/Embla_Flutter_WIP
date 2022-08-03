@@ -37,24 +37,25 @@ class _ConnectionCardState extends State<ConnectionCard> {
           child: SizedBox(
             width: cardWidth,
             child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    widget.connection.name,
-                    style: Theme.of(context).textTheme.titleMedium,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    widget.connection.brand,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    //style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    child: widget.connection.icon,
-                  ),
-                ]),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  widget.connection.name,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  widget.connection.brand,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  //style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  child: widget.connection.icon,
+                ),
+              ],
+            ),
           ),
         ),
       ),
