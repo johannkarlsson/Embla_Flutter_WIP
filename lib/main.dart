@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import './common.dart';
 import './theme.dart';
+import './mdns.dart';
 
 final standardAppBar = AppBar(
   bottomOpacity: 0.0,
@@ -21,6 +22,12 @@ const List<String> kDeviceTypes = <String>["Öll tæki", "Ljós", "Gardínur"];
 
 // List of IoT widgets
 List<Widget> _iot(BuildContext context) {
+  MulticastDNSSearcher mdns = MulticastDNSSearcher();
+
+  mdns.findLocalDevices(kmDNSServiceFilters, (String x) {
+    dlog("CALLBACK: Found device $x");
+  });
+
   return <Widget>[
     Container(
       margin: const EdgeInsets.only(left: 25.0, bottom: 80.0),
@@ -38,6 +45,11 @@ List<Widget> _iot(BuildContext context) {
             }).toList(),
             onChanged: (String val) {
               dlog(val);
+              if (val == "Ljós") {
+                mdns.findLocalDevices(kmDNSServiceFilters, (String x) {
+                  dlog("CALLBACK: Found device $x");
+                });
+              }
             }),
         const Text("herna koma eh tæki"),
         const Text("herna koma eh tæki"),
