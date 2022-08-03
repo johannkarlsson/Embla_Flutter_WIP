@@ -43,7 +43,8 @@ const double defaultFontSize = 19.0;
 const double sessionFontSize = 24.0;
 
 const menuTextStyle = TextStyle(fontSize: defaultFontSize);
-const sessionTextStyle = TextStyle(fontSize: sessionFontSize, fontStyle: FontStyle.italic);
+const sessionTextStyle =
+    TextStyle(fontSize: sessionFontSize, fontStyle: FontStyle.italic);
 
 // Define default (light) app styling and color scheme
 final Color lightMainColor = HexColor.fromHex('#e83939');
@@ -63,14 +64,24 @@ final lightThemeData = ThemeData(
       overline: TextStyle(color: lightTextColor, fontSize: defaultFontSize),
       button: TextStyle(color: lightTextColor, fontSize: defaultFontSize),
       caption: TextStyle(color: lightTextColor, fontSize: defaultFontSize),
-      bodyText1: TextStyle(color: lightMainColor, fontSize: defaultFontSize),
-      bodyText2: TextStyle(color: lightMainColor, fontSize: defaultFontSize),
+      bodyText1: TextStyle(color: lightMainColor, fontSize: 16.0),
+      bodyText2: TextStyle(color: lightMainColor, fontSize: 16.0),
       headline1: TextStyle(color: lightTextColor, fontSize: defaultFontSize),
       headline2: TextStyle(color: lightTextColor, fontSize: defaultFontSize),
       headline3: TextStyle(color: lightTextColor, fontSize: defaultFontSize),
       headline4: TextStyle(color: lightTextColor, fontSize: defaultFontSize),
       headline5: TextStyle(color: lightTextColor, fontSize: defaultFontSize),
       headline6: TextStyle(color: lightTextColor, fontSize: defaultFontSize),
+    ),
+    cardTheme: const CardTheme(
+      elevation: 2.5,
+      shape: RoundedRectangleBorder(
+        // side: BorderSide(
+        //   color: lightMainColor,
+        //   width: 0.4,
+        // ),
+        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+      ),
     ),
     appBarTheme: AppBarTheme(
       color: lightBgColor,
@@ -102,6 +113,16 @@ final darkThemeData = ThemeData(
       headline4: TextStyle(color: darkMainColor, fontSize: defaultFontSize),
       headline5: TextStyle(color: darkMainColor, fontSize: defaultFontSize),
       headline6: TextStyle(color: darkMainColor, fontSize: defaultFontSize),
+    ),
+    cardTheme: const CardTheme(
+      elevation: 2.5,
+      shape: RoundedRectangleBorder(
+        // side: BorderSide(
+        //   color: darkMainColor,
+        //   width: 0.4,
+        // ),
+        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+      ),
     ),
     appBarTheme: AppBarTheme(
       color: darkBgColor,
