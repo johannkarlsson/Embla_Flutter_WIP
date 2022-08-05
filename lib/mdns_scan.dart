@@ -49,18 +49,24 @@ List<Widget> _mdns(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              searchingText,
-              style: const TextStyle(fontSize: 25.0, color: Colors.black),
+            Container(
+              margin: const EdgeInsets.only(top: 9.0, bottom: 9.0),
+              child: Text(
+                searchingText,
+                style: const TextStyle(fontSize: 25.0, color: Colors.black),
+              ),
             ),
-            IconButton(
-              onPressed: () {
-                scanForDevices();
-              },
-              icon: Icon(
-                Icons.refresh_rounded,
-                size: 30.0,
-                color: Theme.of(context).primaryColor,
+            Visibility(
+              visible: !isSearching,
+              child: IconButton(
+                onPressed: () {
+                  scanForDevices();
+                },
+                icon: Icon(
+                  Icons.refresh_rounded,
+                  size: 30.0,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ),
           ],
