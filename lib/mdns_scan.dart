@@ -1,3 +1,6 @@
+// @dart=2.9
+// ^ Removes checks for null safety
+
 /*
  * This file is part of the Embla Flutter app
  * Copyright (c) 2020-2022 Miðeind ehf. <mideind@mideind.is>
@@ -20,132 +23,146 @@
 
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+import './common.dart';
 import './theme.dart';
 import 'connection.dart';
 import 'connection_card.dart';
+import './mdns.dart';
 
 // UI String constants
 const String kNoIoTDevicesFound = 'Engin snjalltæki fundin';
 const String kFindDevices = "Finna snjalltæki";
 
 // List of IoT widgets
-List<Widget> _mdns(BuildContext context) {
-  List<ConnectionCard> connectionCards = <ConnectionCard>[
-    ConnectionCard(
-      connection: Connection(
-        name: 'Hue Hub',
-        brand: 'Philips',
-        icon: Icon(
-          Icons.lightbulb_outline_rounded,
-          color: Theme.of(context).primaryColor,
-          size: 30.0,
-        ),
-      ),
-    ),
-    ConnectionCard(
-      connection: Connection(
-        name: 'Home Smart',
-        brand: 'Ikea',
-        icon: Icon(
-          Icons.lightbulb_outline_rounded,
-          color: Theme.of(context).primaryColor,
-          size: 30.0, // TODO: Make this dynamic
-        ),
-      ),
-    ),
-    ConnectionCard(
-      connection: Connection(
-        name: 'Sonos',
-        brand: 'Sonos, Inc.',
-        icon: Icon(
-          Icons.speaker_outlined,
-          color: Theme.of(context).primaryColor,
-          size: 30.0,
-        ),
-      ),
-    ),
-    ConnectionCard(
-      connection: Connection(
-        name: 'Shelly',
-        brand: 'Shelly, Inc.',
-        icon: Icon(
-          Icons.lightbulb_outline_rounded,
-          color: Theme.of(context).primaryColor,
-          size: 30.0,
-        ),
-      ),
-    ),
-    ConnectionCard(
-      connection: Connection(
-        name: 'Spotify',
-        brand: 'Spotify Technologies S.A.',
-        icon: Icon(
-          Icons.music_note_outlined,
-          color: Theme.of(context).primaryColor,
-          size: 30.0,
-        ),
-      ),
-    ),
-  ];
-
+List<Widget> _mdns(
+    BuildContext context,
+    Function scanForDevices,
+    List<ConnectionCard> connectionCards,
+    String searchingText,
+    bool isSearching) {
   return <Widget>[
     Container(
         margin: const EdgeInsets.only(
             top: 20.0, left: 25.0, bottom: 30.0, right: 25.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
+          children: [
             Text(
-              "Tækjaleit",
-              style: TextStyle(fontSize: 25.0, color: Colors.black),
+              searchingText,
+              style: const TextStyle(fontSize: 25.0, color: Colors.black),
+            ),
+            IconButton(
+              onPressed: () {
+                scanForDevices();
+              },
+              icon: Icon(
+                Icons.refresh_rounded,
+                size: 30.0,
+                color: Theme.of(context).primaryColor,
+              ),
             ),
           ],
         )),
-    Container(
-      margin: const EdgeInsets.only(bottom: 20.0),
-      child: Center(
-        child: ElevatedButton(
-          onPressed: () {},
-          style: const ButtonStyle(),
-          child: const Text(
-            'Skanna',
+    Center(
+      child: Column(
+        children: <Widget>[
+          Wrap(
+            spacing: 10.0,
+            runSpacing: 10.0,
+            children: connectionCards,
           ),
-        ),
+          const SizedBox(height: 50.0),
+          Visibility(
+            visible: isSearching,
+            child: SpinKitRing(
+              color: Theme.of(context).primaryColor,
+              size: 50.0,
+            ),
+          ),
+        ],
       ),
     ),
-    Center(
-        child: Column(
-      children: <Widget>[
-        // DropdownButton(
-        //     items: kDeviceTypes.map<DropdownMenuItem<String>>((String s) {
-        //       return DropdownMenuItem<String>(value: s, child: Text(s));
-        //     }).toList(),
-        //     onChanged: (String val) {
-        //       dlog(val);
-        //     }),
-        Wrap(
-          spacing: 10.0,
-          runSpacing: 10.0,
-          children: connectionCards.map((card) {
-            return card;
-          }).toList(),
-        ),
-        // TODO: Add widget for filtering connected devices (dropdown?)
-        // TODO: Add widget for connected devices
-        // TODO: Add widget for going into "Tengja snjalltæki"
-      ],
-    )),
   ];
-  // TODO: Add widget for selecting specific devices
-  // TODO: Add widget for found devices
-  // TODO: Add widget for activating mDNS search (and spinner)
 }
 
-class MDNSRoute extends StatelessWidget {
+class MDNSRoute extends StatefulWidget {
+  const MDNSRoute({Key key}) : super(key: key);
+
+  @override
+  State<MDNSRoute> createState() => _MDNSRouteState();
+}
+
+class _MDNSRouteState extends State<MDNSRoute> {
+  List<ConnectionCard> connectionCards = [];
+  String searchingText = "Leita að snjalltækjum...";
+  bool isSearching = false;
+
+  void makeCard(String name, String domainName) {
+    final Map<String, Map<String, dynamic>> devices = {
+      "_hue._tcp.local": {
+        "name": 'Hue Hub',
+        "brand": 'Philips',
+        "icon": Icon(
+          Icons.lightbulb_outline_rounded,
+          color: Theme.of(context).primaryColor,
+          size: 30.0,
+        ),
+      },
+      "_sonos._tcp.local": {
+        "name": 'Sonos',
+        "brand": 'Sonos, Inc.',
+        "icon": Icon(
+          Icons.speaker_outlined,
+          color: Theme.of(context).primaryColor,
+          size: 30.0,
+        ),
+      },
+    };
+
+    dlog("MAKING CARD: $name");
+    setState(() {
+      connectionCards.add(ConnectionCard(
+        connection: Connection(
+          name: devices[domainName]['name'],
+          brand: devices[domainName]['brand'],
+          icon: devices[domainName]['icon'],
+        ),
+      ));
+    });
+  }
+
+  void scanForDevices() async {
+    if (isSearching) {
+      return;
+    }
+    setState(() {
+      searchingText = "Tækjaleit í gangi...";
+      connectionCards.clear();
+    });
+    isSearching = true;
+    MulticastDNSSearcher mdns = MulticastDNSSearcher();
+    dlog("Finding devices");
+    await mdns.findLocalDevices(kmDNSServiceFilters, makeCard);
+    isSearching = false;
+
+    setState(() {
+      searchingText = 'Tækjaleit lokið';
+      dlog("Search text set");
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    scanForDevices();
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<Widget> wlist = _mdns(context);
+    List<Widget> wlist = _mdns(
+        context, scanForDevices, connectionCards, searchingText, isSearching);
 
     if (kReleaseMode == false) {
       // Special debug widgets go here

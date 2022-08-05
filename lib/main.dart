@@ -8,17 +8,10 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 
 import './common.dart';
 import './theme.dart';
+import './mdns.dart';
 import './connection_card.dart';
-import 'connection.dart';
-import 'mdns_scan.dart';
-
-final standardAppBar = AppBar(
-  bottomOpacity: 0.0,
-  elevation: 0.0,
-  toolbarOpacity: 1.0,
-  // Red foreground
-  backgroundColor: lightMainColor,
-);
+import './connection.dart';
+import './add_connection.dart';
 
 // UI String constants
 const String kNoIoTDevicesFound = 'Engin snjalltæki fundin';
@@ -30,14 +23,20 @@ void _pushMDNSRoute(BuildContext context, dynamic arg) {
   Navigator.push(
     context,
     CupertinoPageRoute(
-      builder: (context) => MDNSRoute(),
+      builder: (context) => ConnectionRoute(),
     ),
   );
 }
 
 // List of IoT widgets
 List<Widget> _iot(BuildContext context) {
-  print("Context: , $context");
+  // MulticastDNSSearcher mdns = MulticastDNSSearcher();
+
+  // mdns.findLocalDevices(kmDNSServiceFilters, (String x) {
+  //   dlog("CALLBACK: Found device $x");
+  // });
+
+  dlog("Context: , $context");
   return <Widget>[
     Container(
         margin: const EdgeInsets.only(
@@ -50,10 +49,15 @@ List<Widget> _iot(BuildContext context) {
               style: TextStyle(fontSize: 25.0, color: Colors.black),
             ),
             IconButton(
-                onPressed: () {
-                  _pushMDNSRoute(context, null);
-                },
-                icon: const Icon(Icons.add, size: 30.0)),
+              onPressed: () {
+                _pushMDNSRoute(context, null);
+              },
+              icon: Icon(
+                Icons.add,
+                size: 30.0,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
           ],
         )),
     Container(
@@ -66,13 +70,6 @@ List<Widget> _iot(BuildContext context) {
     Center(
         child: Column(
       children: <Widget>[
-        // DropdownButton(
-        //     items: kDeviceTypes.map<DropdownMenuItem<String>>((String s) {
-        //       return DropdownMenuItem<String>(value: s, child: Text(s));
-        //     }).toList(),
-        //     onChanged: (String val) {
-        //       dlog(val);
-        //     }),
         Wrap(
           spacing: 10.0,
           runSpacing: 10.0,
